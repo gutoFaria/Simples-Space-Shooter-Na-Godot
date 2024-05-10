@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://duhldcumma80"]
+
+[ext_resource type="Script" path="res://game/game.gd" id="1_gc2op"]
+[ext_resource type="Texture2D" uid="uid://lgur5f2iiwwg" path="res://assets/background/Blue Nebula 8 - 512x512.png" id="1_m1r8q"]
+[ext_resource type="PackedScene" uid="uid://k5sjc3i0dxpv" path="res://hud/hud.tscn" id="2_7813v"]
+[ext_resource type="PackedScene" uid="uid://dj4ltgoholwjs" path="res://player/player.tscn" id="2_x1hpr"]
+[ext_resource type="PackedScene" uid="uid://7cw0778e8rxp" path="res://enemY_spawner/enemy_spawner.tscn" id="3_sqsau"]
+[ext_resource type="AudioStream" uid="uid://co60117itswhj" path="res://assets/sounds/explosion.wav" id="6_bio4h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3axy8"]
+size = Vector2(21, 420)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_gc2op")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UI" instance=ExtResource("2_7813v")]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 668.0
+offset_bottom = 512.0
+texture = ExtResource("1_m1r8q")
+
+[node name="Player" parent="." instance=ExtResource("2_x1hpr")]
+position = Vector2(170, 161)
+
+[node name="EnemySpawner" parent="." instance=ExtResource("3_sqsau")]
+
+[node name="Deathzone" type="Area2D" parent="."]
+position = Vector2(-68, 145)
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deathzone"]
+position = Vector2(-0.5, 42)
+shape = SubResource("RectangleShape2D_3axy8")
+
+[node name="EnemyHitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_bio4h")
+
+[connection signal="took_damage" from="Player" to="." method="_on_player_took_damage"]
+[connection signal="enemy_spawned" from="EnemySpawner" to="." method="_on_enemy_spawner_enemy_spawned"]
+[connection signal="path_enemy_spawn" from="EnemySpawner" to="." method="_on_enemy_spawner_path_enemy_spawn"]
+[connection signal="area_entered" from="Deathzone" to="." method="_on_deathzone_area_entered"]

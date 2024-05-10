@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dj4ltgoholwjs"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_0lrvv"]
+[ext_resource type="Texture2D" uid="uid://jc1h7edjhtn5" path="res://assets/player/module1.png" id="1_u5hci"]
+[ext_resource type="AudioStream" uid="uid://c26ua7kh6x8u7" path="res://assets/sounds/laser_shooting_sfx.wav" id="3_u58gg"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3wa50"]
+radius = 18.0
+height = 52.0
+
+[node name="Player" type="CharacterBody2D"]
+scale = Vector2(0.7, 0.7)
+collision_mask = 2
+motion_mode = 1
+script = ExtResource("1_0lrvv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_u5hci")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_3wa50")
+
+[node name="RocketContainer" type="Node" parent="."]
+
+[node name="PlayerShoot" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_u58gg")
